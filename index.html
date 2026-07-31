@@ -1,0 +1,224 @@
+
+
+<!-- Created by huzaif✨🩷 -->
+
+<!-- Created by huzaif✨🩷 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom Alert</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+}
+
+
+.over{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:1;
+    box-shadow:inset 5px 5px 70px 60px red;
+}
+
+.alert-box{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    width:300px;
+    text-align:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.3);
+    border:1px dashed red;
+    background-color:black;
+    
+
+}
+
+.alert-box h2{
+    margin-top:0;
+}
+
+button{
+    padding:10px 20px;
+    margin:10px 5px 0;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    color:black;
+    font-size:16px;
+    margin:20px;
+}
+
+.ok{
+    background:red;
+}
+
+.milly{
+    color:red;
+    text-shadow:0 0 10px red,0 0 10px pink;
+    filter:blur(0.23px)
+    
+  
+}
+img{
+     width:100px;
+     height:100px;
+     border-radius:50%;
+     background-size:cover;
+       box-shadow:0 0 10px white,0 0 10px red,0 0 10px red,0 0 10px red;
+    margin:15px;
+        border-radius:20px;
+        
+        border-radius:50%;
+}
+
+span{
+    display:flex;
+    justify-content:center;
+}
+
+
+b{
+    color:red;
+    text-shadow:0 0 5px red;
+    
+}
+h2{
+    color:red;
+}
+video{
+    border-radius:20px 0 20px 0 ;
+    filter:brightness(50px);
+    box-shadow:0 0 10px pink;
+    background-size:cover;
+    corner-shape:notch bevel;
+    margin:10px;
+    corner-shape:notch bevel;
+}
+
+</style>
+</head>
+<body>
+
+<div class="over" id="popup">
+    <div class="alert-box">
+        
+        <img src=" https://www.dropbox.com/scl/fi/qlqq2c9cyenvwcyp802y5/IMG-20260718-WA0002.jpg?rlkey=azdepagd6ajgzkwycmznv2cxu&st=pr2p6lev&&raw=1">
+         <h1 class="milly">Welcome into Milly codes</h1><br>
+        <h2><b>Warning🚫🚫</b><br><br>This cödê is hörrôr
+
+ </h2>
+
+        <button class="ok" onclick="closePopup()">Click</button>
+    
+    </div>
+</div>
+<div class="container">
+        
+            <h1 class="sn">Bloody snow</h1>
+            
+            <div class="clouds"></div>
+            <div class="snow">
+                <span style="--i:11"></span>
+                    <span style="--i:12"></span>
+                    <span style="--i:13"></span>
+                    <span style="--i:14"></span>
+                    <span style="--i:15"></span>
+                    <span style="--i:16"></span>
+                    <span style="--i:17"></span>
+                    <span style="--i:18"></span>
+                    <span style="--i:19"></span>
+                    <span style="--i:20"></span>
+                    <span style="--i:21"></span>
+                    <span style="--i:22"></span>
+                    <span style="--i:23"></span>
+                    <span style="--i:24"></span>
+                    <span style="--i:25"></span>
+                    <span style="--i:26"></span>
+                    <span style="--i:27"></span>
+                    <span style="--i:28"></span>
+                    <span style="--i:29"></span>
+                    <span style="--i:30"></span>
+                    <span style="--i:31"></span>
+                    <span style="--i:31"></span>
+            </div>
+            <div class="line"></div>
+            <div class="emoji">
+                <div class="loop">
+                    <div class="lop"></div>
+                    <div class="pool">
+                        <div class="pol"></div>
+                    </div>
+                
+                    <div class="mounth">
+                    <div class="teeth1"></div>
+                    <div class="teeth2"></div>
+                    <div class="tong"></div>
+                    </div>    
+                </div>
+                </div>
+<button class="btn" id="openBtn">▶ Click me</button>
+
+    <div class="overlay" id="overlay">
+        <button class="close" id="closeBtn">✕</button>
+        <video controls autoplay>
+            <source src="https://www.dropbox.com/scl/fi/vpf1vfclsjhcqqr0ia9v2/VID_20260729193725.mp4?rlkey=kj8rdlkube8p27ali3oxdqzdf&st=1g1scpud&&raw=1">
+        </video>
+    </div>
+
+    <script>
+        const openBtn = document.getElementById('openBtn');
+        const overlay = document.getElementById('overlay');
+        const closeBtn = document.getElementById('closeBtn');
+
+        openBtn.addEventListener('click', () => {
+            overlay.classList.add('show');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            overlay.classList.remove('show');
+        });
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.classList.remove('show');
+            }
+        });
+function closePopup(){
+    document.getElementById("popup").style.display = "none";
+}
+document.addEventListener("DOMContentLoaded", function() {
+        const body = document.querySelector("body");
+
+        function changeColor() {
+        //fixed background color to background 
+            body.style.background = "black";
+        }
+
+        window.changeColor = changeColor;
+
+//using video beacuse of mp4
+        var a = new Audio("https://www.dropbox.com/scl/fi/eoylg7maxwj2d8u3srz5a/Listen-_A_Creepy_wicked_Witch_Laugh_-shorts_-shortsfeed_-soundeffects_-witch_-laugh_-witchlaugh-360p.mp4?rlkey=714vgd8wlxxwgsql0spi2sh4e&st=5it4kjzs&&raw=1");
+        
+a.volume=0.25;
+window.addEventListener('click',() => {
+a.play();
+});
+ 
+    });
+</script>
+
+</body>
+</html>
