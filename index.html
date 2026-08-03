@@ -1,224 +1,219 @@
-
-<!-- open the web Created by huzaif✨🩷 -->
-<!-- Created by huzaif✨🩷 -->
-
-<!-- Created by huzaif✨🩷 -->
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Custom Alert</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to Huzaif Store</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background-color: #f1f3f6; padding-bottom: 70px; }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-}
-
-
-.over{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,0.5);
+    /* Top Header */
+    header { background: #2874f0; color: white; padding: 12px 15px; position: sticky; top: 0; z-index: 10; }
+    .welcome-text { font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 8px; color: #fff; }
     
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    z-index:1;
-    box-shadow:inset 5px 5px 70px 60px red;
-}
+    .search-bar { display: flex; background: white; border-radius: 4px; padding: 6px 10px; align-items: center; }
+    .search-bar input { border: none; outline: none; width: 100%; font-size: 14px; margin-left: 5px; }
 
-.alert-box{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    width:300px;
-    text-align:center;
-    box-shadow:0 4px 10px rgba(0,0,0,0.3);
-    border:1px dashed red;
-    background-color:black;
+    /* Categories Bar */
+    .categories { display: flex; background: white; overflow-x: auto; padding: 12px 5px; gap: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+    .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 65px; text-decoration: none; color: #333; font-size: 12px; font-weight: bold; cursor: pointer; }
+    .cat-icon { font-size: 24px; margin-bottom: 4px; }
+
+    /* Banner Section */
+    .banner { background: linear-gradient(45deg, #ff4e50, #f9d423); color: white; margin: 10px; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .banner h2 { font-size: 20px; margin-bottom: 5px; }
+
+    /* Product Section */
+    .section-title { font-size: 16px; font-weight: bold; margin: 15px 10px 10px; color: #212121; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; padding: 0 10px; }
     
-
-}
-
-.alert-box h2{
-    margin-top:0;
-}
-
-button{
-    padding:10px 20px;
-    margin:10px 5px 0;
-    border:none;
-    border-radius:5px;
-    cursor:pointer;
-    color:black;
-    font-size:16px;
-    margin:20px;
-}
-
-.ok{
-    background:red;
-}
-
-.milly{
-    color:red;
-    text-shadow:0 0 10px red,0 0 10px pink;
-    filter:blur(0.23px)
+    .product-card { background: white; border-radius: 8px; padding: 10px; position: relative; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .product-card img { width: 100%; height: 120px; object-fit: contain; }
     
-  
-}
-img{
-     width:100px;
-     height:100px;
-     border-radius:50%;
-     background-size:cover;
-       box-shadow:0 0 10px white,0 0 10px red,0 0 10px red,0 0 10px red;
-    margin:15px;
-        border-radius:20px;
-        
-        border-radius:50%;
-}
+    .heart-btn { position: absolute; top: 8px; right: 8px; font-size: 20px; color: #ccc; background: none; border: none; cursor: pointer; }
+    .heart-btn.active { color: red; }
 
-span{
-    display:flex;
-    justify-content:center;
-}
+    .p-name { font-size: 14px; font-weight: 500; margin: 8px 0 4px; color: #212121; height: 36px; overflow: hidden; }
+    .p-rating { font-size: 11px; background: #388e3c; color: white; padding: 2px 6px; border-radius: 3px; display: inline-block; margin-bottom: 5px; }
+    .p-price { font-size: 16px; font-weight: bold; color: #212121; margin-bottom: 8px; }
 
+    .buy-btn { background: #ff9f00; color: white; border: none; width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 13px; }
 
-b{
-    color:red;
-    text-shadow:0 0 5px red;
-    
-}
-h2{
-    color:red;
-}
-video{
-    border-radius:20px 0 20px 0 ;
-    filter:brightness(50px);
-    box-shadow:0 0 10px pink;
-    background-size:cover;
-    corner-shape:notch bevel;
-    margin:10px;
-    corner-shape:notch bevel;
-}
+    /* Bottom Navigation Bar (Flipkart Style) */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid #e0e0e0; z-index: 20; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: #666; font-size: 11px; text-decoration: none; cursor: pointer; }
+    .nav-item.active { color: #2874f0; font-weight: bold; }
+    .nav-icon { font-size: 18px; margin-bottom: 2px; }
 
-</style>
+    /* Popups / Modals */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 100; }
+    .modal-content { background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 400px; max-height: 90vh; overflow-y: auto; position: relative; }
+    .close-btn { position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; }
+
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+  </style>
 </head>
 <body>
 
-<div class="over" id="popup">
-    <div class="alert-box">
-        
-        <img src=" https://https://ibb.co/dNJ6rCR
-         <h1 class="A B H EDITOR">Welcome into A. B. H codes</h1><br>
-        <h2><b>Warning🚫🚫</b><br><br>This cödê is A B H EDITOR
+  <header>
+    <div class="welcome-text">Welcome to Huzaif Store 🛍️</div>
+    <div class="search-bar">
+      🔍 <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search for products, brands and more...">
+    </div>
+  </header>
 
- </h2>
+  <div class="categories">
+    <div class="cat-item" onclick="filterCategory('all')"><span class="cat-icon">🛍️</span>For You</div>
+    <div class="cat-item" onclick="filterCategory('fashion')"><span class="cat-icon">👕</span>Fashion</div>
+    <div class="cat-item" onclick="filterCategory('mobile')"><span class="cat-icon">📱</span>Mobiles</div>
+    <div class="cat-item" onclick="filterCategory('electronics')"><span class="cat-icon">💻</span>Electronics</div>
+    <div class="cat-item" onclick="filterCategory('beauty')"><span class="cat-icon">💄</span>Beauty</div>
+  </div>
 
-        <button class="ok" onclick="closePopup()">Click</button>
+  <div class="banner">
+    <h2>🔥 BIG FREEDOM SALE 🔥</h2>
+    <p>Get Up to 80% OFF on all products!</p>
+  </div>
+
+  <div class="section-title">Trending Products</div>
+  <div class="products-grid" id="productList">
     
-    </div>
-</div>
-<div class="container">
-        
-            <h1 class="sn">Bloody snow</h1>
-            
-            <div class="clouds"></div>
-            <div class="snow">
-                <span style="--i:11"></span>
-                    <span style="--i:12"></span>
-                    <span style="--i:13"></span>
-                    <span style="--i:14"></span>
-                    <span style="--i:15"></span>
-                    <span style="--i:16"></span>
-                    <span style="--i:17"></span>
-                    <span style="--i:18"></span>
-                    <span style="--i:19"></span>
-                    <span style="--i:20"></span>
-                    <span style="--i:21"></span>
-                    <span style="--i:22"></span>
-                    <span style="--i:23"></span>
-                    <span style="--i:24"></span>
-                    <span style="--i:25"></span>
-                    <span style="--i:26"></span>
-                    <span style="--i:27"></span>
-                    <span style="--i:28"></span>
-                    <span style="--i:29"></span>
-                    <span style="--i:30"></span>
-                    <span style="--i:31"></span>
-                    <span style="--i:31"></span>
-            </div>
-            <div class="line"></div>
-            <div class="emoji">
-                <div class="loop">
-                    <div class="lop"></div>
-                    <div class="pool">
-                        <div class="pol"></div>
-                    </div>
-                
-                    <div class="mounth">
-                    <div class="teeth1"></div>
-                    <div class="teeth2"></div>
-                    <div class="tong"></div>
-                    </div>    
-                </div>
-                </div>
-<button class="btn" id="openBtn">▶ Click me</button>
-
-    <div class="overlay" id="overlay">
-        <button class="close" id="closeBtn">✕</button>
-        <video controls autoplay>
-            <source src="https://www.dropbox.com/scl/fi/vpf1vfclsjhcqqr0ia9v2/VID_20260729193725.mp4?rlkey=kj8rdlkube8p27ali3oxdqzdf&st=1g1scpud&&raw=1">
-        </video>
+    <div class="product-card" data-cat="fashion">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://via.placeholder.com/150" alt="Casual Shoes">
+      <div class="p-name">Women's Casual Pink Boots</div>
+      <div class="p-rating">4.3 ★</div>
+      <div class="p-price">₹200</div>
+      <button class="buy-btn" onclick="openCheckout('Women Casual Pink Boots', '200')">Buy Now</button>
     </div>
 
-    <script>
-        const openBtn = document.getElementById('openBtn');
-        const overlay = document.getElementById('overlay');
-        const closeBtn = document.getElementById('closeBtn');
+    <div class="product-card" data-cat="beauty">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://via.placeholder.com/150" alt="Face Wash">
+      <div class="p-name">Gentle Skin Face Wash</div>
+      <div class="p-rating">4.8 ★</div>
+      <div class="p-price">₹100</div>
+      <button class="buy-btn" onclick="openCheckout('Gentle Skin Face Wash', '100')">Buy Now</button>
+    </div>
 
-        openBtn.addEventListener('click', () => {
-            overlay.classList.add('show');
-        });
+    <div class="product-card" data-cat="mobile">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://via.placeholder.com/150" alt="Smartphone">
+      <div class="p-name">5G Smartphone (128GB)</div>
+      <div class="p-rating">4.5 ★</div>
+      <div class="p-price">₹14,999</div>
+      <button class="buy-btn" onclick="openCheckout('5G Smartphone', '14999')">Buy Now</button>
+    </div>
 
-        closeBtn.addEventListener('click', () => {
-            overlay.classList.remove('show');
-        });
+  </div>
 
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                overlay.classList.remove('show');
-            }
-        });
-function closePopup(){
-    document.getElementById("popup").style.display = "none";
-}
-document.addEventListener("DOMContentLoaded", function() {
-        const body = document.querySelector("body");
+  <div class="bottom-nav">
+    <div class="nav-item active"><span class="nav-icon">🏠</span>Home</div>
+    <div class="nav-item" onclick="alert('Categories Selected')"><span class="nav-icon">📊</span>Categories</div>
+    <div class="nav-item" onclick="openLoginModal()"><span class="nav-icon">👤</span>Account</div>
+    <div class="nav-item" onclick="alert('Cart is empty')"><span class="nav-icon">🛒</span>Cart</div>
+  </div>
 
-        function changeColor() {
-        //fixed background color to background 
-            body.style.background = "black";
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('loginModal')">X</button>
+      <h3>Account Login / Sign Up</h3><br>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Full Name:</label>
+          <input type="text" id="userNameInput" required placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+          <label>Mobile Number:</label>
+          <input type="tel" pattern="[0-9]{10}" required placeholder="10 digit number">
+        </div>
+        <button type="submit" class="buy-btn" style="background:#2874f0;">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="checkoutModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('checkoutModal')">X</button>
+      <h3 id="itemTitle">Product</h3>
+      <p style="color: green; font-weight: bold; margin: 5px 0 15px;">Total Price: <span id="itemPrice">₹0</span></p>
+
+      <h4>📦 Delivery Address</h4><br>
+      <form onsubmit="placeOrder(event)">
+        <div class="form-group"><label>House No. / Street / Area:</label><input type="text" required></div>
+        <div class="form-group"><label>City Name:</label><input type="text" required></div>
+        <div class="form-group"><label>Pincode:</label><input type="number" required></div>
+        <div class="form-group"><label>Country:</label><select><option>India</option></select></div>
+
+        <h4>💳 Payment Options</h4>
+        <div style="margin: 10px 0;">
+          <label><input type="radio" name="pay" value="COD" checked> 💵 Cash on Delivery (COD)</label><br>
+          <label><input type="radio" name="pay" value="UPI"> 🟣 PhonePe / GPay / Paytm / UPI</label>
+        </div>
+
+        <button type="submit" class="buy-btn" style="background: #388e3c;">Confirm Order</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let isLoggedIn = false;
+    let loggedUserName = "";
+
+    function toggleWishlist(btn) { btn.classList.toggle('active'); }
+    function openLoginModal() { document.getElementById('loginModal').style.display = "flex"; }
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      loggedUserName = document.getElementById('userNameInput').value;
+      isLoggedIn = true;
+      alert("Welcome " + loggedUserName);
+      closeModal('loginModal');
+    }
+
+    function filterProducts() {
+      let input = document.getElementById('searchInput').value.toLowerCase();
+      let cards = document.getElementsByClassName('product-card');
+      for (let card of cards) {
+        let title = card.querySelector('.p-name').innerText.toLowerCase();
+        card.style.display = title.includes(input) ? "block" : "none";
+      }
+    }
+
+    function filterCategory(cat) {
+      let cards = document.getElementsByClassName('product-card');
+      for (let card of cards) {
+        if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
         }
+      }
+    }
 
-        window.changeColor = changeColor;
+    function openCheckout(title, price) {
+      if (!isLoggedIn) {
+        alert("Please login first!");
+        openLoginModal();
+        return;
+      }
+      document.getElementById('itemTitle').innerText = title;
+      document.getElementById('itemPrice').innerText = "₹" + price;
+      document.getElementById('checkoutModal').style.display = "flex";
+    }
 
-//using video beacuse of mp4
-        var a = new Audio("https://www.dropbox.com/scl/fi/eoylg7maxwj2d8u3srz5a/Listen-_A_Creepy_wicked_Witch_Laugh_-shorts_-shortsfeed_-soundeffects_-witch_-laugh_-witchlaugh-360p.mp4?rlkey=714vgd8wlxxwgsql0spi2sh4e&st=5it4kjzs&&raw=1");
-        
-a.volume=0.25;
-window.addEventListener('click',() => {
-a.play();
-});
- 
-    });
-</script>
+    function placeOrder(e) {
+      e.preventDefault();
+      let pay = document.querySelector('input[name="pay"]:checked').value;
+      alert("🎉 Order Confirmed for " + loggedUserName + "!\nPayment Method: " + pay);
+      closeModal('checkoutModal');
+    }
+  </script>
 
 </body>
 </html>
+
