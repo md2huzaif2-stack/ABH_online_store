@@ -8,45 +8,39 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
     body { background-color: #f1f3f6; padding-bottom: 70px; }
 
-    /* Top Header */
     header { background: #2874f0; color: white; padding: 12px 15px; position: sticky; top: 0; z-index: 10; }
     .welcome-text { font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 8px; color: #fff; }
     
     .search-bar { display: flex; background: white; border-radius: 4px; padding: 6px 10px; align-items: center; }
     .search-bar input { border: none; outline: none; width: 100%; font-size: 14px; margin-left: 5px; }
 
-    /* Categories Bar */
     .categories { display: flex; background: white; overflow-x: auto; padding: 12px 5px; gap: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
     .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 65px; text-decoration: none; color: #333; font-size: 12px; font-weight: bold; cursor: pointer; }
     .cat-icon { font-size: 24px; margin-bottom: 4px; }
 
-    /* Banner Section */
     .banner { background: linear-gradient(45deg, #ff4e50, #f9d423); color: white; margin: 10px; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     .banner h2 { font-size: 20px; margin-bottom: 5px; }
 
-    /* Product Section */
     .section-title { font-size: 16px; font-weight: bold; margin: 15px 10px 10px; color: #212121; }
     .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; padding: 0 10px; }
     
     .product-card { background: white; border-radius: 8px; padding: 10px; position: relative; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    .product-card img { width: 100%; height: 120px; object-fit: contain; }
+    .product-card img { width: 100%; height: 140px; object-fit: contain; border-radius: 4px; }
     
     .heart-btn { position: absolute; top: 8px; right: 8px; font-size: 20px; color: #ccc; background: none; border: none; cursor: pointer; }
     .heart-btn.active { color: red; }
 
-    .p-name { font-size: 14px; font-weight: 500; margin: 8px 0 4px; color: #212121; height: 36px; overflow: hidden; }
+    .p-name { font-size: 13px; font-weight: 500; margin: 8px 0 4px; color: #212121; height: 36px; overflow: hidden; line-height: 1.3; }
     .p-rating { font-size: 11px; background: #388e3c; color: white; padding: 2px 6px; border-radius: 3px; display: inline-block; margin-bottom: 5px; }
     .p-price { font-size: 16px; font-weight: bold; color: #212121; margin-bottom: 8px; }
 
     .buy-btn { background: #ff9f00; color: white; border: none; width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 13px; }
 
-    /* Bottom Navigation Bar (Flipkart Style) */
     .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid #e0e0e0; z-index: 20; }
     .nav-item { display: flex; flex-direction: column; align-items: center; color: #666; font-size: 11px; text-decoration: none; cursor: pointer; }
     .nav-item.active { color: #2874f0; font-weight: bold; }
     .nav-icon { font-size: 18px; margin-bottom: 2px; }
 
-    /* Popups / Modals */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 100; }
     .modal-content { background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 400px; max-height: 90vh; overflow-y: auto; position: relative; }
     .close-btn { position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; }
@@ -61,16 +55,15 @@
   <header>
     <div class="welcome-text">Welcome to Huzaif Store 🛍️</div>
     <div class="search-bar">
-      🔍 <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search for products, brands and more...">
+      🔍 <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search for products...">
     </div>
   </header>
 
   <div class="categories">
     <div class="cat-item" onclick="filterCategory('all')"><span class="cat-icon">🛍️</span>For You</div>
-    <div class="cat-item" onclick="filterCategory('fashion')"><span class="cat-icon">👕</span>Fashion</div>
-    <div class="cat-item" onclick="filterCategory('mobile')"><span class="cat-icon">📱</span>Mobiles</div>
-    <div class="cat-item" onclick="filterCategory('electronics')"><span class="cat-icon">💻</span>Electronics</div>
+    <div class="cat-item" onclick="filterCategory('electronics')"><span class="cat-icon">⌚</span>Gadgets</div>
     <div class="cat-item" onclick="filterCategory('beauty')"><span class="cat-icon">💄</span>Beauty</div>
+    <div class="cat-item" onclick="filterCategory('fashion')"><span class="cat-icon">👕</span>Fashion</div>
   </div>
 
   <div class="banner">
@@ -81,31 +74,31 @@
   <div class="section-title">Trending Products</div>
   <div class="products-grid" id="productList">
     
-    <div class="product-card" data-cat="fashion">
+    <div class="product-card" data-cat="electronics">
       <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
-      <img src="https://via.placeholder.com/150" alt="Casual Shoes">
-      <div class="p-name">Women's Casual Pink Boots</div>
-      <div class="p-rating">4.3 ★</div>
-      <div class="p-price">₹200</div>
-      <button class="buy-btn" onclick="openCheckout('Women Casual Pink Boots', '200')">Buy Now</button>
+      <img src="https://m.media-amazon.com/images/I/61tapeOXotL._SL1500_.jpg" alt="Smart Watch">
+      <div class="p-name">Smart Bluetooth Calling Watch</div>
+      <div class="p-rating">4.7 ★</div>
+      <div class="p-price">₹599</div>
+      <button class="buy-btn" onclick="openCheckout('Smart Bluetooth Calling Watch', '599')">Buy Now</button>
     </div>
 
     <div class="product-card" data-cat="beauty">
       <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
-      <img src="https://via.placeholder.com/150" alt="Face Wash">
-      <div class="p-name">Gentle Skin Face Wash</div>
-      <div class="p-rating">4.8 ★</div>
-      <div class="p-price">₹100</div>
-      <button class="buy-btn" onclick="openCheckout('Gentle Skin Face Wash', '100')">Buy Now</button>
+      <img src="https://m.media-amazon.com/images/I/51+Z1T7cIEL._SL1000_.jpg" alt="Clean & Clear Foaming Face Wash">
+      <div class="p-name">Clean & Clear Foaming Face Wash</div>
+      <div class="p-rating">4.5 ★</div>
+      <div class="p-price">₹120</div>
+      <button class="buy-btn" onclick="openCheckout('Clean & Clear Foaming Face Wash', '120')">Buy Now</button>
     </div>
 
-    <div class="product-card" data-cat="mobile">
+    <div class="product-card" data-cat="beauty">
       <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
-      <img src="https://via.placeholder.com/150" alt="Smartphone">
-      <div class="p-name">5G Smartphone (128GB)</div>
-      <div class="p-rating">4.5 ★</div>
-      <div class="p-price">₹14,999</div>
-      <button class="buy-btn" onclick="openCheckout('5G Smartphone', '14999')">Buy Now</button>
+      <img src="https://m.media-amazon.com/images/I/51e+mX6S2kL._SL1000_.jpg" alt="Ponds Bright Beauty Facewash">
+      <div class="p-name">Ponds Bright Beauty Spotless Glow Facewash</div>
+      <div class="p-rating">4.6 ★</div>
+      <div class="p-price">₹198</div>
+      <button class="buy-btn" onclick="openCheckout('Ponds Bright Beauty Spotless Glow Facewash', '198')">Buy Now</button>
     </div>
 
   </div>
@@ -216,4 +209,3 @@
 
 </body>
 </html>
-
