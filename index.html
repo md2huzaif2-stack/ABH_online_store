@@ -815,3 +815,51 @@
     closeModal('returnModal');
   }
 </script>
+<div class="modal" id="myOrdersModal">
+  <div class="modal-content" style="max-width: 450px;">
+    <button class="close-btn" onclick="closeModal('myOrdersModal')">X</button>
+    <h3 style="color:#2874f0; margin-bottom:12px; font-size:16px;">📦 My Orders History</h3>
+    
+    <div style="display: flex; gap: 5px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 5px;">
+      <button style="background: #2874f0; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer;">All</button>
+      <button style="background: #f0f0f0; color: #333; border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer;">Active Orders</button>
+      <button style="background: #f0f0f0; color: #333; border: none; padding: 5px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer;">Cancelled</button>
+    </div>
+
+    <div style="background: #f9f9f9; padding: 10px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #eee; display: flex; gap: 10px; align-items: center;">
+      <img src="https://m.media-amazon.com/images/I/61tV09e4YxL._SL1500_.jpg" style="width: 50px; height: 50px; object-fit: contain;">
+      <div style="flex-grow: 1;">
+        <h4 style="font-size: 12px; color: #212121; font-weight: bold;">Men's Formal Casual Shirt</h4>
+        <p style="font-size: 11px; color: #388e3c; font-weight: bold;">Delivery expected by Aug 12</p>
+        <p style="font-size: 10px; color: #666;">Seller has processed your order.</p>
+      </div>
+      <button class="buy-btn" style="padding: 5px 8px; font-size: 10px;" onclick="openTrackingModal()">Track</button>
+    </div>
+
+    <div style="background: #f9f9f9; padding: 10px; border-radius: 6px; margin-bottom: 8px; border: 1px solid #eee; display: flex; gap: 10px; align-items: center;">
+      <img src="https://m.media-amazon.com/images/I/619712dE+OL._SL1500_.jpg" style="width: 50px; height: 50px; object-fit: contain;">
+      <div style="flex-grow: 1;">
+        <h4 style="font-size: 12px; color: #212121; font-weight: bold;">Cotton Stylish T-Shirt</h4>
+        <p style="font-size: 11px; color: #d32f2f; font-weight: bold;">Cancelled on Mon Aug 03</p>
+        <p style="font-size: 10px; color: #666;">Customer cancellation request.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // अकाउंट पेज के मेनू में 'My Orders' का ऑप्शन जोड़ना
+  window.addEventListener('DOMContentLoaded', (event) => {
+    let settingsList = document.querySelector('.settings-list');
+    if (settingsList) {
+      let myOrdersItem = document.createElement('div');
+      myOrdersItem.className = 'settings-item';
+      myOrdersItem.innerHTML = '<span>📦 My Orders & History (List)</span> <span>></span>';
+      myOrdersItem.onclick = function() {
+        document.getElementById('myOrdersModal').style.display = "flex";
+      };
+      settingsList.prepend(myOrdersItem);
+    }
+  });
+</script>
