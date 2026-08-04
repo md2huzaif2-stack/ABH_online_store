@@ -650,3 +650,18 @@
 </body>
 </html>
 
+<script>
+  // अकाउंट पेज के मेनू में 'Your Orders' का ऑप्शन जोड़ना और क्लिक करने पर ट्रैकिंग खोलना
+  window.addEventListener('DOMContentLoaded', (event) => {
+    let settingsList = document.querySelector('.settings-list');
+    if (settingsList) {
+      let orderItem = document.createElement('div');
+      orderItem.className = 'settings-item';
+      orderItem.innerHTML = '<span>📦 Your Orders (Live Tracking)</span> <span>></span>';
+      orderItem.onclick = function() {
+        openTrackingModal();
+      };
+      settingsList.prepend(orderItem);
+    }
+  });
+</script>
