@@ -1,1 +1,734 @@
 
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABH Online Store - Pro E-Commerce App</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f1f3f6; padding-bottom: 70px; }
+
+    header { background: #2874f0; color: white; padding: 12px 15px; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .welcome-text { font-size: 18px; font-weight: 800; text-align: center; margin-bottom: 8px; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
+    
+    .search-bar { display: flex; background: white; border-radius: 4px; padding: 6px 12px; align-items: center; }
+    .search-bar input { border: none; outline: none; width: 100%; font-size: 14px; margin-left: 6px; background: transparent; }
+    .mic-btn { background: none; border: none; font-size: 18px; cursor: pointer; color: #2874f0; padding-left: 5px; }
+
+    /* Categories Bar */
+    .categories { display: flex; background: white; overflow-x: auto; padding: 10px; gap: 15px; justify-content: space-between; border-bottom: 1px solid #e0e0e0; }
+    .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 65px; text-decoration: none; color: #333; font-size: 11px; font-weight: 600; cursor: pointer; }
+    .cat-icon { font-size: 24px; margin-bottom: 3px; background: #f0f3f8; padding: 8px; border-radius: 50%; }
+
+    /* Mega Festival Sale Banner */
+    .festival-banner { background: linear-gradient(45deg, #ff9900, #ff3300, #cc0000); color: white; margin: 10px; padding: 18px; border-radius: 10px; text-align: center; box-shadow: 0 4px 15px rgba(255,102,0,0.4); animation: pulseBanner 1.5s infinite; }
+    .festival-banner h2 { font-size: 20px; margin-bottom: 5px; font-weight: 900; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); }
+    .festival-banner p { font-size: 13px; font-weight: bold; }
+    @keyframes pulseBanner { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+    /* Normal Banner */
+    .banner { background: linear-gradient(45deg, #ff416c, #ff4b2b); color: white; margin: 10px; padding: 16px; border-radius: 8px; text-align: center; box-shadow: 0 4px 10px rgba(255,65,108,0.2); }
+    .banner h2 { font-size: 17px; margin-bottom: 4px; font-weight: 700; }
+    .banner p { font-size: 12px; font-weight: bold; }
+
+    .section-title { font-size: 16px; font-weight: bold; margin: 12px 10px 8px; color: #212121; display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px; border-radius: 4px; }
+    
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 10px; padding: 0 10px; }
+    .product-card { background: white; border-radius: 6px; padding: 10px; position: relative; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .product-card img { width: 100%; height: 130px; object-fit: contain; border-radius: 4px; }
+    
+    .heart-btn { position: absolute; top: 10px; right: 10px; font-size: 20px; color: #c2c2c2; background: white; border: none; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .heart-btn.active { color: #ff416c; }
+
+    .p-name { font-size: 12px; font-weight: 600; margin: 6px 0 3px; color: #212121; height: 32px; overflow: hidden; line-height: 1.2; }
+    
+    .star-rating { font-size: 13px; color: #ffa41c; cursor: pointer; margin-bottom: 4px; }
+    .p-price { font-size: 16px; font-weight: bold; color: #212121; margin-bottom: 8px; }
+    .old-price { font-size: 12px; text-decoration: line-through; color: #888; margin-right: 5px; }
+
+    .btn-container { display: flex; gap: 5px; }
+    .cart-add-btn { background: #ff9f00; color: white; border: none; width: 50%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 11px; }
+    .buy-btn { background: #fb641b; color: white; border: none; width: 50%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 11px; }
+
+    /* Bottom Navigation */
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid #e0e0e0; z-index: 20; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); }
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: #878787; font-size: 10px; text-decoration: none; cursor: pointer; font-weight: 600; position: relative; }
+    .nav-item.active { color: #2874f0; }
+    .nav-icon { font-size: 18px; margin-bottom: 2px; }
+    .cart-badge { position: absolute; top: -3px; right: 8px; background: #ff416c; color: white; font-size: 9px; padding: 1px 5px; border-radius: 10px; font-weight: bold; }
+
+    /* Page Views */
+    .page-view { display: none; }
+    .page-view.active-page { display: block; }
+
+    /* Cart Page Layout */
+    .cart-container { padding: 10px; max-width: 600px; margin: 0 auto; }
+    .cart-item-card { background: white; padding: 10px; border-radius: 6px; margin-bottom: 10px; display: flex; gap: 12px; align-items: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .cart-item-card img { width: 70px; height: 70px; object-fit: contain; }
+    .cart-item-details { flex-grow: 1; }
+    .cart-item-title { font-size: 13px; font-weight: 600; color: #212121; margin-bottom: 4px; }
+    .cart-item-price { font-size: 15px; font-weight: bold; color: #212121; margin-bottom: 6px; }
+    .remove-cart-btn { background: none; border: none; color: #ff416c; font-size: 12px; font-weight: bold; cursor: pointer; }
+
+    .cart-summary { background: white; padding: 15px; border-radius: 6px; margin-top: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .cart-summary-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 8px; color: #555; }
+    .cart-summary-total { display: flex; justify-content: space-between; font-size: 16px; font-weight: bold; color: #212121; border-top: 1px dashed #ccc; padding-top: 8px; margin-top: 8px; }
+
+    /* Account Page Styles */
+    .account-header { background: #2874f0; color: white; padding: 20px 15px; display: flex; align-items: center; gap: 15px; }
+    .account-avatar { width: 50px; height: 50px; background: #ff9f00; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; }
+    .account-menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
+    .account-card-box { background: white; padding: 15px; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.08); cursor: pointer; font-size: 13px; font-weight: bold; color: #212121; display: flex; align-items: center; gap: 10px; }
+    .settings-list { background: white; margin-top: 10px; }
+    .settings-item { padding: 14px 15px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; font-size: 13px; color: #212121; cursor: pointer; }
+
+    /* Modals */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 100; }
+    .modal-content { background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 380px; max-height: 90vh; overflow-y: auto; position: relative; }
+    .close-btn { position: absolute; top: 10px; right: 10px; background: #ff416c; color: white; border: none; width: 26px; height: 26px; border-radius: 50%; font-weight: bold; cursor: pointer; }
+
+    .form-group { margin-bottom: 10px; }
+    .form-group label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 3px; color: #555; }
+    .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+
+    .delivery-badge { background: #ffebee; color: #c62828; border: 1px dashed #c62828; padding: 6px; border-radius: 4px; font-size: 11px; font-weight: bold; text-align: center; margin-bottom: 10px; }
+    .location-btn { background: #0088cc; color: white; border: none; padding: 8px; border-radius: 4px; font-size: 11px; font-weight: bold; cursor: pointer; width: 100%; }
+    .ai-float-btn { position: fixed; bottom: 70px; right: 15px; background: #6200ee; color: white; border: none; border-radius: 30px; padding: 8px 14px; font-weight: bold; font-size: 12px; box-shadow: 0 4px 10px rgba(98,0,238,0.3); cursor: pointer; z-index: 25; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="welcome-text">ABH ONLINE STORE 🛍️</div>
+    <div class="search-bar">
+      🔍 <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search or speak...">
+      <button class="mic-btn" onclick="startVoiceSearch()" title="Speak to Search">🎤</button>
+    </div>
+  </header>
+
+  <div id="homePage" class="page-view active-page">
+    <div class="categories">
+      <div class="cat-item" onclick="filterCategory('all')"><span class="cat-icon">🛍️</span>All</div>
+      <div class="cat-item" onclick="filterCategory('shirt')"><span class="cat-icon">👔</span>Shirts</div>
+      <div class="cat-item" onclick="filterCategory('tshirt')"><span class="cat-icon">👕</span>T-Shirts</div>
+      <div class="cat-item" onclick="filterCategory('shoes')"><span class="cat-icon">👟</span>Shoes</div>
+      <div class="cat-item" onclick="filterCategory('watch')"><span class="cat-icon">⌚</span>Smart Watch</div>
+      <div class="cat-item" onclick="filterCategory('mobiles')"><span class="cat-icon">📱</span>Mobiles</div>
+    </div>
+
+    <div id="festivalBannerBox" class="festival-banner">
+      <h2 id="festivalTitleText">🔥 15 AUGUST / DIWALI MEGA BIG SALE! 🔥</h2>
+      <p id="festivalDescText">Sabhi products par भारी छूट! 24 Ghante mein Delivery ya Parcel FREE!</p>
+    </div>
+
+    <div class="banner">
+      <h2>⚡ 24-GHANTE MEIN DELIVERY YA PARCEL FREE! ⚡</h2>
+      <p>Agar 24 ghante mein ghar ke paas nahi pahuncha, toh parcel bilkul FREE!</p>
+    </div>
+
+    <div class="section-title">
+      <span>Trending Collections</span>
+      <div>
+        <button class="buy-btn" style="width: auto; padding: 5px 8px; font-size: 9px; background:#d32f2f;" onclick="openFestivalModal()">🎉 Festival Sale</button>
+        <button class="buy-btn" style="width: auto; padding: 5px 8px; font-size: 9px;" onclick="openAddProductModal()">+ Add Product</button>
+      </div>
+    </div>
+
+    <div class="products-grid" id="productList">
+      
+      <div class="product-card" data-cat="shirt" data-baseprice="499">
+        <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+        <img src="https://m.media-amazon.com/images/I/61tV09e4YxL._SL1500_.jpg" alt="Formal Shirt">
+        <div class="p-name">Men's Formal Casual Shirt</div>
+        <div class="star-rating">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span> <b style="font-size:10px; color:#555;">(4.2)</b>
+        </div>
+        <div class="p-price"><span class="old-price" id="old_1" style="display:none;">₹699</span><span id="price_1">₹499</span></div>
+        <div class="btn-container">
+          <button class="cart-add-btn" onclick="addToCartClick(1, 'Men\'s Formal Casual Shirt', 'https://m.media-amazon.com/images/I/61tV09e4YxL._SL1500_.jpg')">Add Cart</button>
+          <button class="buy-btn" onclick="buyNowClick(1, 'Men\'s Formal Casual Shirt')">Buy Now</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-cat="tshirt" data-baseprice="299">
+        <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+        <img src="https://m.media-amazon.com/images/I/619712dE+OL._SL1500_.jpg" alt="Cotton T-Shirt">
+        <div class="p-name">Cotton Stylish T-Shirt</div>
+        <div class="star-rating">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span> <b style="font-size:10px; color:#555;">(4.4)</b>
+        </div>
+        <div class="p-price"><span class="old-price" id="old_2" style="display:none;">₹499</span><span id="price_2">₹299</span></div>
+        <div class="btn-container">
+          <button class="cart-add-btn" onclick="addToCartClick(2, 'Cotton Stylish T-Shirt', 'https://m.media-amazon.com/images/I/619712dE+OL._SL1500_.jpg')">Add Cart</button>
+          <button class="buy-btn" onclick="buyNowClick(2, 'Cotton Stylish T-Shirt')">Buy Now</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-cat="shoes" data-baseprice="699">
+        <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+        <img src="https://m.media-amazon.com/images/I/61S1i0+3H1L._SL1500_.jpg" alt="Running Shoes">
+        <div class="p-name">Running Sports Shoes</div>
+        <div class="star-rating">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>☆</span> <b style="font-size:10px; color:#555;">(4.3)</b>
+        </div>
+        <div class="p-price"><span class="old-price" id="old_3" style="display:none;">₹999</span><span id="price_3">₹699</span></div>
+        <div class="btn-container">
+          <button class="cart-add-btn" onclick="addToCartClick(3, 'Running Sports Shoes', 'https://m.media-amazon.com/images/I/61S1i0+3H1L._SL1500_.jpg')">Add Cart</button>
+          <button class="buy-btn" onclick="buyNowClick(3, 'Running Sports Shoes')">Buy Now</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-cat="watch" data-baseprice="1299">
+        <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+        <img src="https://m.media-amazon.com/images/I/61ZJQg09+SL._SL1500_.jpg" alt="Smart Watch">
+        <div class="p-name">Bluetooth Calling Smart Watch</div>
+        <div class="star-rating">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span> <b style="font-size:10px; color:#555;">(4.6)</b>
+        </div>
+        <div class="p-price"><span class="old-price" id="old_4" style="display:none;">₹1,999</span><span id="price_4">₹1,299</span></div>
+        <div class="btn-container">
+          <button class="cart-add-btn" onclick="addToCartClick(4, 'Bluetooth Calling Smart Watch', 'https://m.media-amazon.com/images/I/61ZJQg09+SL._SL1500_.jpg')">Add Cart</button>
+          <button class="buy-btn" onclick="buyNowClick(4, 'Bluetooth Calling Smart Watch')">Buy Now</button>
+        </div>
+      </div>
+
+      <div class="product-card" data-cat="mobiles" data-baseprice="14999">
+        <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+        <img src="https://m.media-amazon.com/images/I/61tapeOXotL._SL1500_.jpg" alt="Smartphone">
+        <div class="p-name">5G Smartphone (128GB)</div>
+        <div class="star-rating">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span> <b style="font-size:10px; color:#555;">(4.5)</b>
+        </div>
+        <div class="p-price"><span class="old-price" id="old_5" style="display:none;">₹18,999</span><span id="price_5">₹14,999</span></div>
+        <div class="btn-container">
+          <button class="cart-add-btn" onclick="addToCartClick(5, '5G Smartphone (128GB)', 'https://m.media-amazon.com/images/I/61tapeOXotL._SL1500_.jpg')">Add Cart</button>
+          <button class="buy-btn" onclick="buyNowClick(5, '5G Smartphone (128GB)')">Buy Now</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="cartPage" class="page-view">
+    <div class="cart-container">
+      <h3 style="margin-bottom: 10px; color: #333; font-size: 16px;">My Shopping Cart 🛒</h3>
+      <div id="cartItemsList"></div>
+      <div id="cartSummaryBox" style="display:none;">
+        <div class="cart-summary">
+          <div class="cart-summary-row"><span>Subtotal</span> <span id="cartSubtotal">₹0</span></div>
+          <div class="cart-summary-row"><span>Festival Mega Discount</span> <span style="color:#d32f2f; font-weight:bold;" id="cartDiscountRow">-₹0</span></div>
+          <div class="cart-summary-row"><span>24-Hour Express Delivery</span> <span style="color: #388e3c; font-weight:bold;">FREE</span></div>
+          <div class="cart-summary-total"><span>Total Amount</span> <span id="cartTotal">₹0</span></div>
+        </div>
+        <button class="buy-btn" style="width: 100%; margin-top: 12px; padding: 12px; font-size: 15px; background: #388e3c;" onclick="checkoutFromCart()">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="accountPage" class="page-view">
+    <div class="account-header">
+      <div class="account-avatar" id="userAvatarText">H</div>
+      <div>
+        <h3 id="accountUserName" style="font-size: 16px;">Huzaif / Guest</h3>
+        <p style="font-size: 11px; opacity: 0.9;">Store Founder & Owner 👑</p>
+      </div>
+    </div>
+
+    <div class="account-menu-grid">
+      <div class="account-card-box" onclick="openFestivalModal()">🎉 Manage Festival Sale</div>
+      <div class="account-card-box" onclick="alert('Your Wishlist is empty!')">❤️ Wishlist</div>
+      <div class="account-card-box" onclick="openAddProductModal()">➕ Add Product</div>
+      <div class="account-card-box" onclick="openAboutFounder()">👨‍💻 About Founder</div>
+    </div>
+
+    <div class="settings-list">
+      <div class="settings-item" onclick="openLoginModal()"><span>👤 Edit Profile / Login</span> <span>></span></div>
+      <div class="settings-item" onclick="openFestivalModal()"><span>🎉 Active Festival Sale Setup</span> <span>></span></div>
+      <div class="settings-item" onclick="openAboutFounder()"><span>ℹ️ About ABH Store & Founder</span> <span>></span></div>
+      <div class="settings-item" onclick="alert('Logged out successfully')" style="color: #d32f2f; font-weight: bold;"><span>🚪 Log Out</span> <span>></span></div>
+    </div>
+  </div>
+
+  <button class="ai-float-btn" onclick="openAiHelp()">🤖 AI Help</button>
+
+  <div class="bottom-nav">
+    <div class="nav-item active" id="navHome" onclick="switchTab('home')"><span class="nav-icon">🏠</span>Home</div>
+    <div class="nav-item" id="navCategories" onclick="switchTab('home')"><span class="nav-icon">📊</span>Categories</div>
+    <div class="nav-item" id="navAccount" onclick="switchTab('account')"><span class="nav-icon">👤</span>Account</div>
+    <div class="nav-item" id="navCart" onclick="switchTab('cart')"><span class="nav-icon">🛒</span>Cart <span class="cart-badge" id="cartCountBadge">0</span></div>
+  </div>
+
+  <div class="modal" id="festivalModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('festivalModal')">X</button>
+      <h3 style="color:#d32f2f; margin-bottom:10px; font-size:16px;">🎉 Setup Festival Mega Sale</h3>
+      <div class="form-group">
+        <label>Select Festival / Occasion:</label>
+        <select id="festSelect" onchange="updateFestivalPreset()">
+          <option value="15 August Freedom Sale">🇮🇳 15 August Freedom Sale</option>
+          <option value="26 January Republic Sale">🇮🇳 26 January Republic Sale</option>
+          <option value="Diwali Mega Dhamaka Sale">🪔 Diwali Mega Dhamaka Sale</option>
+          <option value="Eid Mubarak Special Sale">🌙 Eid Mubarak Special Sale</option>
+          <option value="New Year Grand Sale">🎊 New Year Grand Sale</option>
+          <option value="Custom Festive Sale">✨ Custom Festive Sale</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Custom Festival Banner Heading:</label>
+        <input type="text" id="festTitleInput" value="🔥 15 AUGUST FREEDOM BIG SALE! 🔥">
+      </div>
+      <div class="form-group">
+        <label>Discount Percentage (% Off):</label>
+        <input type="number" id="festDiscountInput" value="20" placeholder="20">
+      </div>
+      <button type="button" class="buy-btn" style="background:#d32f2f; width:100%; margin-top:5px;" onclick="applyFestivalSale()">Activate Mega Sale Now</button>
+    </div>
+  </div>
+
+  <div class="modal" id="addProductModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('addProductModal')">X</button>
+      <h3 style="color:#2874f0; margin-bottom:10px; font-size:16px;">Add New Product</h3>
+      <form onsubmit="addNewProduct(event)">
+        <div class="form-group"><label>Product Name:</label><input type="text" id="newProdName" required placeholder="e.g. Branded Jacket"></div>
+        <div class="form-group"><label>Category:</label>
+          <select id="newProdCat">
+            <option value="shirt">Shirt</option>
+            <option value="tshirt">T-Shirt</option>
+            <option value="shoes">Shoes</option>
+            <option value="watch">Smart Watch</option>
+            <option value="mobiles">Mobiles</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Price (₹):</label><input type="number" id="newProdPrice" required placeholder="599"></div>
+        <div class="form-group"><label>Image (Upload or Link):</label>
+          <input type="file" id="newProdImageFile" accept="image/*" onchange="previewImage(event)">
+          <input type="text" id="newProdImageUrl" placeholder="Or Paste Image Link" style="margin-top:5px;">
+        </div>
+        <button type="submit" class="buy-btn" style="background:#2874f0; margin-top:5px; width:100%;">Add Product</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('loginModal')">X</button>
+      <h3 style="color:#2874f0; margin-bottom:10px; font-size:16px;">Account Sign Up</h3>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group"><label>Full Name:</label><input type="text" id="userNameInput" required placeholder="Enter your name"></div>
+        <div class="form-group"><label>Mobile Number:</label><input type="tel" id="userPhoneInput" pattern="[0-9]{10}" required placeholder="10 digit number"></div>
+        <button type="submit" class="buy-btn" style="background:#2874f0; margin-top:5px; width:100%;">Continue</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="founderModal">
+    <div class="modal-content" style="text-align: center;">
+      <button class="close-btn" onclick="closeModal('founderModal')">X</button>
+      <h3 style="color: #2874f0; margin-bottom: 8px; font-size: 18px;">👑 About Founder</h3>
+      <div style="font-size: 50px; margin: 10px 0;">👨‍💻</div>
+      <h4 style="color: #212121; font-size: 16px; margin-bottom: 5px;">Huzaif</h4>
+      <p style="font-size: 12px; color: #666; font-weight: bold; margin-bottom: 10px;">Founder & CEO of ABH Online Store</p>
+      <p style="font-size: 12px; color: #555; line-height: 1.5; text-align: left; background: #f9f9f9; padding: 10px; border-radius: 6px;">
+        Welcome to ABH Online Store! Created by <b>Huzaif</b> with superfast 24-hour delivery guarantee and seasonal mega sales.
+      </p>
+      <button class="buy-btn" style="background: #2874f0; width:100%; margin-top: 10px;" onclick="closeModal('founderModal')">Close</button>
+    </div>
+  </div>
+
+  <div class="modal" id="checkoutModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('checkoutModal')">X</button>
+      <h3 id="itemTitle" style="color:#333; font-size:15px;">Product</h3>
+      <p style="color: #388e3c; font-weight: bold; margin: 4px 0 8px; font-size: 14px;">Total Price: <span id="itemPrice">₹0</span></p>
+
+      <div class="delivery-badge">
+        🚨 24 Ghante Mein Delivery Nahi Toh Parcel FREE! (<span id="deliveryDateSpan"></span>)
+      </div>
+
+      <h4 style="margin-bottom: 5px; color:#555; font-size:12px;">📦 Delivery Address</h4>
+      <form onsubmit="placeOrder(event)">
+        <div class="form-group"><label>House No. / Street / Area:</label><input type="text" id="addressInput" required placeholder="House/Street details"></div>
+        <div class="form-group"><label>City Name:</label><input type="text" id="cityInput" required placeholder="City"></div>
+        <div class="form-group"><label>Pincode:</label><input type="number" id="pincodeInput" required placeholder="6 digit pincode"></div>
+        
+        <div class="form-group">
+          <label>📍 GPS Live Location:</label>
+          <button type="button" class="location-btn" onclick="getLiveLocation()">📍 Share Current GPS Location</button>
+          <input type="text" id="locationInput" readonly placeholder="Location not shared yet" style="margin-top: 4px; background: #eee; font-size: 10px;">
+        </div>
+
+        <h4 style="margin: 6px 0 3px; color:#555; font-size:12px;">💳 Payment Options</h4>
+        <div style="margin: 4px 0; font-size: 12px;">
+          <label><input type="radio" name="pay" value="COD" checked> 💵 Cash on Delivery (COD)</label><br>
+          <label><input type="radio" name="pay" value="UPI"> 🟣 UPI / Google Pay / PhonePe</label>
+        </div>
+
+        <button type="submit" class="buy-btn" style="background: #388e3c; margin-top: 6px; width:100%;">Confirm Order on WhatsApp</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="aiModal">
+    <div class="modal-content" style="text-align: center;">
+      <button class="close-btn" onclick="closeModal('aiModal')">X</button>
+      <h3 style="color: #6200ee; margin-bottom: 8px; font-size: 16px;">🤖 Store AI Assistant</h3>
+      <p style="font-size: 12px; color: #555; line-height: 1.4; margin-bottom: 12px;">
+        Festival Mega Sale system is active! You can configure 15 August, Diwali, Eid or any festive sale anytime from Account or Festival Sale button.
+      </p>
+      <button class="buy-btn" style="background: #6200ee; width:100%;" onclick="closeModal('aiModal')">Got it!</button>
+    </div>
+  </div>
+
+  <script>
+    let isLoggedIn = false;
+    let loggedUserName = "Huzaif";
+    let loggedUserPhone = "";
+    let customerLocationUrl = "Not Provided";
+    let calculatedDeliveryDate = "";
+    let cart = [];
+    let uploadedImageBase64 = "";
+
+    // Festival sale active state & discount percentage
+    let festivalActive = true;
+    let discountPercent = 20; // 20% default festival discount
+
+    // ⚠️ अपना असली WhatsApp नंबर यहाँ लिखें (91 के साथ)
+    const MY_WHATSAPP_NUMBER = "919876543210"; 
+
+    function calculateDeliveryTime() {
+      let d = new Date();
+      d.setDate(d.getDate() + 1);
+      let options = { weekday: 'short', month: 'short', day: 'numeric' };
+      calculatedDeliveryDate = d.toLocaleDateString('en-IN', options);
+      document.getElementById('deliveryDateSpan').innerText = "By " + calculatedDeliveryDate;
+    }
+    calculateDeliveryTime();
+
+    // Auto check special festival dates on load
+    function checkAutoFestival() {
+      let today = new Date();
+      let m = today.getMonth() + 1; // Month
+      let d = today.getDate(); // Day
+
+      let festTitle = "🔥 MEGA FESTIVAL BIG SALE! 🔥";
+      let festDesc = "Special festival discount active across all collections!";
+
+      if (m === 8 && d === 15) {
+        festTitle = "🇮🇳 15 AUGUST FREEDOM BIG SALE! 🇮🇳";
+        festDesc = "Celebrate Independence Day with heavy discounts and 24-hr delivery!";
+      } else if (m === 1 && d === 26) {
+        festTitle = "🇮🇳 26 JANUARY REPUBLIC BIG SALE! 🇮🇳";
+        festDesc = "Republic Day mega discounts across all categories!";
+      } else if (m === 3 && (d >= 10 && d <= 15)) {
+        festTitle = "🪔 EID MUBARAK SPECIAL BIG SALE! 🌙";
+        festDesc = "Celebrate Eid with special festive discounts!";
+      }
+
+      document.getElementById('festivalTitleText').innerText = festTitle;
+      document.getElementById('festivalDescText').innerText = festDesc;
+    }
+    checkAutoFestival();
+
+    function updateFestivalPreset() {
+      let val = document.getElementById('festSelect').value;
+      document.getElementById('festTitleInput').value = "🔥 " + val.toUpperCase() + " 🔥";
+    }
+
+    function openFestivalModal() { document.getElementById('festivalModal').style.display = "flex"; }
+
+    function applyFestivalSale() {
+      let customTitle = document.getElementById('festTitleInput').value;
+      discountPercent = parseInt(document.getElementById('festivalDiscountInput').value) || 20;
+      
+      document.getElementById('festivalTitleText').innerText = customTitle;
+      document.getElementById('festivalBannerBox').style.display = "block";
+      festivalActive = true;
+      
+      applyPricesToStore();
+      alert("Festival Mega Sale activated successfully with " + discountPercent + "% OFF!");
+      closeModal('festivalModal');
+    }
+
+    function applyPricesToStore() {
+      // Recalculate default items pricing based on festival discount
+      let cards = document.getElementsByClassName('product-card');
+      for (let i = 0; i < cards.length; i++) {
+        let base = parseInt(cards[i].getAttribute('data-baseprice')) || 500;
+        let discountPrice = Math.round(base * (1 - discountPercent / 100));
+        
+        let priceSpan = cards[i].querySelector('.p-price span:last-child');
+        let oldSpan = cards[i].querySelector('.old-price');
+
+        if(festivalActive) {
+          if(priceSpan) priceSpan.innerText = "₹" + discountPrice;
+          if(oldSpan) {
+            oldSpan.style.display = "inline";
+            oldSpan.innerText = "₹" + base;
+          }
+        }
+      }
+    }
+    applyPricesToStore();
+
+    function getActivePrice(basePrice) {
+      if(festivalActive) {
+        return Math.round(basePrice * (1 - discountPercent / 100));
+      }
+      return basePrice;
+    }
+
+    // 🎤 Voice Search Functionality
+    function startVoiceSearch() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Voice search is not supported in this browser.");
+        return;
+      }
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'hi-IN';
+      recognition.onstart = function() { alert("Listening... Speak now 🎤"); };
+      recognition.onresult = function(event) {
+        document.getElementById('searchInput').value = event.results[0][0].transcript;
+        filterProducts();
+      };
+      recognition.start();
+    }
+
+    function switchTab(tab) {
+      document.getElementById('homePage').classList.remove('active-page');
+      document.getElementById('cartPage').classList.remove('active-page');
+      document.getElementById('accountPage').classList.remove('active-page');
+      
+      document.getElementById('navHome').classList.remove('active');
+      document.getElementById('navCart').classList.remove('active');
+      document.getElementById('navAccount').classList.remove('active');
+
+      if(tab === 'home') {
+        document.getElementById('homePage').classList.add('active-page');
+        document.getElementById('navHome').classList.add('active');
+      } else if(tab === 'cart') {
+        document.getElementById('cartPage').classList.add('active-page');
+        document.getElementById('navCart').classList.add('active');
+        renderCart();
+      } else if(tab === 'account') {
+        document.getElementById('accountPage').classList.add('active-page');
+        document.getElementById('navAccount').classList.add('active');
+      }
+    }
+
+    function addToCartClick(id, title, img) {
+      let base = 500;
+      if(id === 1) base = 499;
+      if(id === 2) base = 299;
+      if(id === 3) base = 699;
+      if(id === 4) base = 1299;
+      if(id === 5) base = 14999;
+      
+      let finalPrice = getActivePrice(base);
+      cart.push({ title: title, price: finalPrice, basePrice: base, img: img });
+      document.getElementById('cartCountBadge').innerText = cart.length;
+      alert(title + " added to cart with Festival Offer!");
+    }
+
+    function buyNowClick(id, title) {
+      let base = 500;
+      if(id === 1) base = 499;
+      if(id === 2) base = 299;
+      if(id === 3) base = 699;
+      if(id === 4) base = 1299;
+      if(id === 5) base = 14999;
+
+      let finalPrice = getActivePrice(base);
+      openCheckout(title, finalPrice);
+    }
+
+    function renderCart() {
+      let listDiv = document.getElementById('cartItemsList');
+      let summaryBox = document.getElementById('cartSummaryBox');
+      
+      if(cart.length === 0) {
+        listDiv.innerHTML = '<p style="font-size: 13px; color: #777; text-align: center; margin: 30px 0;">Your cart is currently empty. Shop now!</p>';
+        summaryBox.style.display = "none";
+        return;
+      }
+
+      summaryBox.style.display = "block";
+      let html = "";
+      let subtotal = 0;
+      let totalDiscount = 0;
+
+      cart.forEach((item, index) => {
+        subtotal += item.basePrice || item.price;
+        let itemDisc = (item.basePrice && festivalActive) ? (item.basePrice - item.price) : 0;
+        totalDiscount += itemDisc;
+
+        html += `<div class="cart-item-card">
+                  <img src="${item.img}" alt="Product">
+                  <div class="cart-item-details">
+                    <div class="cart-item-title">${item.title}</div>
+                    <div class="cart-item-price">₹${item.price} <span style="font-size:10px; color:green; font-weight:normal;">(${discountPercent}% OFF)</span></div>
+                    <button class="remove-cart-btn" onclick="removeFromCart(${index})">Remove</button>
+                  </div>
+                </div>`;
+      });
+
+      listDiv.innerHTML = html;
+      let finalTotal = subtotal - totalDiscount;
+      document.getElementById('cartSubtotal').innerText = "₹" + subtotal;
+      document.getElementById('cartDiscountRow').innerText = "-₹" + totalDiscount;
+      document.getElementById('cartTotal').innerText = "₹" + finalTotal;
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      document.getElementById('cartCountBadge').innerText = cart.length;
+      renderCart();
+    }
+
+    function toggleWishlist(btn) { btn.classList.toggle('active'); }
+    function openLoginModal() { document.getElementById('loginModal').style.display = "flex"; }
+    function openAboutFounder() { document.getElementById('founderModal').style.display = "flex"; }
+    function openAddProductModal() { document.getElementById('addProductModal').style.display = "flex"; }
+    function openAiHelp() { document.getElementById('aiModal').style.display = "flex"; }
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
+
+    let uploadedImageBase64 = "";
+    function previewImage(event) {
+      let reader = new FileReader();
+      reader.onload = function(){ uploadedImageBase64 = reader.result; };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function addNewProduct(e) {
+      e.preventDefault();
+      let name = document.getElementById('newProdName').value;
+      let cat = document.getElementById('newProdCat').value;
+      let base = parseInt(document.getElementById('newProdPrice').value);
+      let linkUrl = document.getElementById('newProdImageUrl').value;
+      let finalImg = uploadedImageBase64 || linkUrl || "https://m.media-amazon.com/images/I/61tV09e4YxL._SL1500_.jpg";
+      let finalPrice = getActivePrice(base);
+
+      let grid = document.getElementById('productList');
+      let newCard = document.createElement('div');
+      newCard.className = "product-card";
+      newCard.setAttribute('data-cat', cat);
+      newCard.setAttribute('data-baseprice', base);
+      newCard.innerHTML = `
+        <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+        <img src="${finalImg}" alt="${name}">
+        <div class="p-name">${name}</div>
+        <div class="star-rating">
+          <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span> <b style="font-size:10px; color:#555;">(5.0)</b>
+        </div>
+        <div class="p-price"><span class="old-price">₹${base}</span><span>₹${finalPrice}</span></div>
+        <div class="btn-container">
+          <button class="cart-add-btn" onclick="addToCartClick(99, '${name}', '${finalImg}')">Add Cart</button>
+          <button class="buy-btn" onclick="openCheckout('${name}', '${finalPrice}')">Buy Now</button>
+        </div>
+      `;
+      grid.prepend(newCard);
+      alert("Product added with Festival Sale offer!");
+      closeModal('addProductModal');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      loggedUserName = document.getElementById('userNameInput').value;
+      loggedUserPhone = document.getElementById('userPhoneInput').value;
+      isLoggedIn = true;
+      document.getElementById('accountUserName').innerText = loggedUserName;
+      document.getElementById('userAvatarText').innerText = loggedUserName.charAt(0).toUpperCase();
+      alert("Welcome " + loggedUserName + "!");
+      closeModal('loginModal');
+      switchTab('home');
+    }
+
+    function getLiveLocation() {
+      if (navigator.geolocation) {
+        alert("Fetching your location...");
+        navigator.geolocation.getCurrentPosition(
+          function(position) {
+            let lat = position.coords.latitude;
+            let lon = position.coords.longitude;
+            customerLocationUrl = `https://maps.google.com/?q=${lat},${lon}`;
+            document.getElementById('locationInput').value = `Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`;
+            alert("Live Location attached!");
+          },
+          function(error) { alert("Unable to retrieve location."); }
+        );
+      }
+    }
+
+    function filterProducts() {
+      let input = document.getElementById('searchInput').value.toLowerCase();
+      let cards = document.getElementsByClassName('product-card');
+      for (let card of cards) {
+        let title = card.querySelector('.p-name').innerText.toLowerCase();
+        card.style.display = title.includes(input) ? "block" : "none";
+      }
+    }
+
+    function filterCategory(cat) {
+      let cards = document.getElementsByClassName('product-card');
+      for (let card of cards) {
+        if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      }
+    }
+
+    function openCheckout(title, price) {
+      if (!isLoggedIn) {
+        alert("Please login first!");
+        openLoginModal();
+        return;
+      }
+      document.getElementById('itemTitle').innerText = title;
+      document.getElementById('itemPrice').innerText = "₹" + price;
+      document.getElementById('checkoutModal').style.display = "flex";
+    }
+
+    function checkoutFromCart() {
+      if (!isLoggedIn) {
+        alert("Please login first!");
+        openLoginModal();
+        return;
+      }
+      if(cart.length === 0) return;
+      let titles = cart.map(item => item.title).join(", ");
+      let total = cart.reduce((sum, item) => sum + item.price, 0);
+      
+      document.getElementById('itemTitle').innerText = "Cart Items: " + titles;
+      document.getElementById('itemPrice').innerText = "₹" + total;
+      document.getElementById('checkoutModal').style.display = "flex";
+    }
+
+    function placeOrder(e) {
+      e.preventDefault();
+      let product = document.getElementById('itemTitle').innerText;
+      let price = document.getElementById('itemPrice').innerText;
+      let address = document.getElementById('addressInput').value;
+      let city = document.getElementById('cityInput').value;
+      let pincode = document.getElementById('pincodeInput').value;
+      let pay = document.querySelector('input[name="pay"]:checked').value;
+
+      let message = `🚨 *NEW FESTIVAL ORDER - ABH STORE*%0A%0A` +
+                    `*Items:* ${product}%0A` +
+                    `*Total Price:* ${price} (Festival Sale Discount Applied)%0A` +
+                    `⚡ *Guarantee:* 24 Hours Delivery or PARCEL FREE! (${calculatedDeliveryDate})%0A%0A` +
+                    `👤 *Customer:* ${loggedUserName} (${loggedUserPhone})%0A` +
+                    `📦 *Address:* ${address}, ${city} - ${pincode}%0A` +
+                    `📍 *Live Location:* ${customerLocationUrl}%0A` +
+                    `💳 *Payment:* ${pay}`;
+
+      window.open(`https://wa.me/${MY_WHATSAPP_NUMBER}?text=${message}`, '_blank');
+      closeModal('checkoutModal');
+    }
+  </script>
+
+</body>
+</html>
