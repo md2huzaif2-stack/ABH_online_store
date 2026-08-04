@@ -248,3 +248,503 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title A B H online Store</title>
+  <meta name="google-site-verification" content="84AxSkgimwklS2GIY-4zFHXQx12OFfs2nvRdzCAWCm8" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background-color: #f1f3f6; padding-bottom: 70px; }
+
+    header { background: #2874f0; color: white; padding: 12px 15px; position: sticky; top: 0; z-index: 10; }
+    .welcome-text { font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 8px; color: #fff; }
+    
+    .search-bar { display: flex; background: white; border-radius: 4px; padding: 6px 10px; align-items: center; }
+    .search-bar input { border: none; outline: none; width: 100%; font-size: 14px; margin-left: 5px; }
+
+    .categories { display: flex; background: white; overflow-x: auto; padding: 12px 5px; gap: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+    .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 65px; text-decoration: none; color: #333; font-size: 12px; font-weight: bold; cursor: pointer; }
+    .cat-icon { font-size: 24px; margin-bottom: 4px; }
+
+    .banner { background: linear-gradient(45deg, #ff4e50, #f9d423); color: white; margin: 10px; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .banner h2 { font-size: 20px; margin-bottom: 5px; }
+
+    .section-title { font-size: 16px; font-weight: bold; margin: 15px 10px 10px; color: #212121; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; padding: 0 10px; }
+    
+    .product-card { background: white; border-radius: 8px; padding: 10px; position: relative; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .product-card img { width: 100%; height: 140px; object-fit: contain; border-radius: 4px; }
+    
+    .heart-btn { position: absolute; top: 8px; right: 8px; font-size: 20px; color: #ccc; background: none; border: none; cursor: pointer; }
+    .heart-btn.active { color: red; }
+
+    .p-name { font-size: 13px; font-weight: 500; margin: 8px 0 4px; color: #212121; height: 36px; overflow: hidden; line-height: 1.3; }
+    .p-rating { font-size: 11px; background: #388e3c; color: white; padding: 2px 6px; border-radius: 3px; display: inline-block; margin-bottom: 5px; }
+    .p-price { font-size: 16px; font-weight: bold; color: #212121; margin-bottom: 8px; }
+
+    .buy-btn { background: #ff9f00; color: white; border: none; width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 13px; }
+
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid #e0e0e0; z-index: 20; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: #666; font-size: 11px; text-decoration: none; cursor: pointer; }
+    .nav-item.active { color: #2874f0; font-weight: bold; }
+    .nav-icon { font-size: 18px; margin-bottom: 2px; }
+
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 100; }
+    .modal-content { background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 400px; max-height: 90vh; overflow-y: auto; position: relative; }
+    .close-btn { position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; }
+
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="welcome-text">Welcome to A B H Online Store 🛍️</div>
+    <div class="search-bar">
+      🔍 <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search for products...">
+    </div>
+  </header>
+
+  <div class="categories">
+    <div class="cat-item" onclick="filterCategory('all')"><span class="cat-icon">🛍️</span>For You</div>
+    <div class="cat-item" onclick="filterCategory('beauty')"><span class="cat-icon">💄</span>Beauty</div>
+    <div class="cat-item" onclick="filterCategory('electronics')"><span class="cat-icon">⌚</span>Gadgets</div>
+  </div>
+     <div class="cat-item" onclick="filterCategory('t shirts') "><span class=" cat-icon">👕</span>t shirts</div>
+  <div class="banner">
+    <h2>🔥 BIG FREEDOM SALE 🔥</h2>
+    <p>Get Up to 80% OFF on all products!</p>
+  </div>
+
+  <div class="section-title">Trending Products</div>
+  <div class="products-grid" id="productList">
+    
+    <div class="product-card" data-cat="beauty">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://m.media-amazon.com/images/I/61S1i0+3H1L._SL1500_.jpg" alt="Cetaphil SA Cleanser 29ml">
+      <div class="p-name">Cetaphil Gentle Exfoliating SA Cleanser (29 ml)</div>
+      <div class="p-rating">4.2 ★</div>
+      <div class="p-price">₹99</div>
+      <button class="buy-btn" onclick="openCheckout('Cetaphil Gentle Exfoliating SA Cleanser (29 ml)', '99')">Buy Now</button>
+    </div>
+
+    <div class="product-card" data-cat="beauty">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://m.media-amazon.com/images/I/51rYI7a+NLL._SL1000_.jpg" alt="Cetaphil BHR Cleanser">
+      <div class="p-name">Cetaphil BHR Cleanser Face Wash</div>
+      <div class="p-rating">4.5 ★</div>
+      <div class="p-price">₹881</div>
+      <button class="buy-btn" onclick="openCheckout('Cetaphil BHR Cleanser Face Wash', '881')">Buy Now</button>
+    </div>
+
+    <div class="product-card" data-cat="beauty">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://m.media-amazon.com/images/I/51+Z1T7cIEL._SL1000_.jpg" alt="Clean & Clear">
+      <div class="p-name">Clean & Clear Foaming Face Wash</div>
+      <div class="p-rating">4.5 ★</div>
+      <div class="p-price">₹120</div>
+      <button class="buy-btn" onclick="openCheckout('Clean & Clear Foaming Face Wash', '120')">Buy Now</button>
+    </div>
+
+    <div class="product-card" data-cat="beauty">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://m.media-amazon.com/images/I/51e+mX6S2kL._SL1000_.jpg" alt="Ponds">
+      <div class="p-name">Ponds Bright Beauty Spotless Glow Facewash</div>
+      <div class="p-rating">4.6 ★</div>
+      <div class="p-price">₹198</div>
+      <button class="buy-btn" onclick="openCheckout('Ponds Bright Beauty Spotless Glow Facewash', '198')">Buy Now</button>
+    </div>
+
+    <div class="product-card" data-cat="electronics">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://m.media-amazon.com/images/I/61tapeOXotL._SL1500_.jpg" alt="Smart Watch">
+      <div class="p-name">Smart Bluetooth Calling Watch</div>
+      <div class="p-rating">4.7 ★</div>
+      <div class="p-price">₹599</div>
+      <button class="buy-btn" onclick="openCheckout('Smart Bluetooth Calling Watch', '599')">Buy Now</button>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active"><span class="nav-icon">🏠</span>Home</div>
+    <div class="nav-item" onclick="alert('Categories Selected')"><span class="nav-icon">📊</span>Categories</div>
+    <div class="nav-item" onclick="openLoginModal()"><span class="nav-icon">👤</span>Account</div>
+    <div class="nav-item" onclick="alert('Cart is empty')"><span class="nav-icon">🛒</span>Cart</div>
+  </div>
+
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('loginModal')">X</button>
+      <h3>Account Login / Sign Up</h3><br>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Full Name:</label>
+          <input type="text" id="userNameInput" required placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+          <label>Mobile Number:</label>
+          <input type="tel" id="userPhoneInput" pattern="[0-9]{10}" required placeholder="10 digit number">
+        </div>
+        <button type="submit" class="buy-btn" style="background:#2874f0;">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="checkoutModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('checkoutModal')">X</button>
+      <h3 id="itemTitle">Product</h3>
+      <p style="color: green; font-weight: bold; margin: 5px 0 15px;">Total Price: <span id="itemPrice">₹0</span></p>
+
+      <h4>📦 Delivery Address</h4><br>
+      <form onsubmit="placeOrder(event)">
+        <div class="form-group"><label>House No. / Street / Area:</label><input type="text" id="addressInput" required></div>
+        <div class="form-group"><label>City Name:</label><input type="text" id="cityInput" required></div>
+        <div class="form-group"><label>Pincode:</label><input type="number" id="pincodeInput" required></div>
+        <div class="form-group"><label>Country:</label><select><option>India</option></select></div>
+
+        <h4>💳 Payment Options</h4>
+        <div style="margin: 10px 0;">
+          <label><input type="radio" name="pay" value="COD" checked> 💵 Cash on Delivery (COD)</label><br>
+          <label><input type="radio" name="pay" value="UPI"> 🟣 PhonePe / GPay / Paytm / UPI</label>
+        </div>
+
+        <button type="submit" class="buy-btn" style="background: #388e3c;">Confirm Order on WhatsApp</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let isLoggedIn = false;
+    let loggedUserName = "";
+    let loggedUserPhone = "";
+
+    const MY_WHATSAPP_NUMBER = "9088699141"; 
+
+    function toggleWishlist(btn) { btn.classList.toggle('active'); }
+    function openLoginModal() { document.getElementById('loginModal').style.display = "flex"; }
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      loggedUserName = document.getElementById('userNameInput').value;
+      loggedUserPhone = document.getElementById('userPhoneInput').value;
+      isLoggedIn = true;
+      alert("Welcome " + loggedUserName);
+      closeModal('loginModal');
+    }
+
+    function filterProducts() {
+      let input = document.getElementById('searchInput').value.toLowerCase();
+      let cards = document.getElementsByClassName('product-card');
+      for (let card of cards) {
+        let title = card.querySelector('.p-name').innerText.toLowerCase();
+        card.style.display = title.includes(input) ? "block" : "none";
+      }
+    }
+
+    function filterCategory(cat) {
+      let cards = document.getElementsByClassName('product-card');
+      for (let card of cards) {
+        if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      }
+    }
+
+    function openCheckout(title, price) {
+      if (!isLoggedIn) {
+        alert("Please login first!");
+        openLoginModal();
+        return;
+      }
+      document.getElementById('itemTitle').innerText = title;
+      document.getElementById('itemPrice').innerText = "₹" + price;
+      document.getElementById('checkoutModal').style.display = "flex";
+    }
+
+    function placeOrder(e) {
+      e.preventDefault();
+      let product = document.getElementById('itemTitle').innerText;
+      let price = document.getElementById('itemPrice').innerText;
+      let address = document.getElementById('addressInput').value;
+      let city = document.getElementById('cityInput').value;
+      let pincode = document.getElementById('pincodeInput').value;
+      let pay = document.querySelector('input[name="pay"]:checked').value;
+
+      let message = `🛍️ *NEW ORDER - HUZAIF STORE*%0A%0A` +
+                    `*Product:* ${product}%0A` +
+                    `*Price:* ${price}%0A%0A` +
+                    `👤 *Customer Details:*%0A` +
+                    `Name: ${loggedUserName}%0A` +
+                    `Phone: ${loggedUserPhone}%0A%0A` +
+                    `📦 *Address:*%0A` +
+                    `${address}, ${city} - ${pincode}%0A%0A` +
+                    `💳 *Payment:* ${pay}`;
+
+      let whatsappUrl = `https://wa.me/${9088699141}?text=${message}`;
+      window.open(whatsappUrl, '_blank');
+      closeModal('checkoutModal');
+    }
+  </script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title A B H online Store</title>
+  <meta name="google-site-verification" content="84AxSkgimwklS2GIY-4zFHXQx12OFfs2nvRdzCAWCm8" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+    body { background-color: #f1f3f6; padding-bottom: 70px; }
+
+    header { background: #2874f0; color: white; padding: 12px 15px; position: sticky; top: 0; z-index: 10; }
+    .welcome-text { font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 8px; color: #fff; }
+    
+    .search-bar { display: flex; background: white; border-radius: 4px; padding: 6px 10px; align-items: center; }
+    .search-bar input { border: none; outline: none; width: 100%; font-size: 14px; margin-left: 5px; }
+
+    .categories { display: flex; background: white; overflow-x: auto; padding: 12px 5px; gap: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+    .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 65px; text-decoration: none; color: #333; font-size: 12px; font-weight: bold; cursor: pointer; }
+    .cat-icon { font-size: 24px; margin-bottom: 4px; }
+
+    .banner { background: linear-gradient(45deg, #ff4e50, #f9d423); color: white; margin: 10px; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .banner h2 { font-size: 20px; margin-bottom: 5px; }
+
+    .section-title { font-size: 16px; font-weight: bold; margin: 15px 10px 10px; color: #212121; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; padding: 0 10px; }
+    
+    .product-card { background: white; border-radius: 8px; padding: 10px; position: relative; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .product-card img { width: 100%; height: 140px; object-fit: contain; border-radius: 4px; }
+    
+    .heart-btn { position: absolute; top: 8px; right: 8px; font-size: 20px; color: #ccc; background: none; border: none; cursor: pointer; }
+    .heart-btn.active { color: red; }
+
+    .p-name { font-size: 13px; font-weight: 500; margin: 8px 0 4px; color: #212121; height: 36px; overflow: hidden; line-height: 1.3; }
+    .p-rating { font-size: 11px; background: #388e3c; color: white; padding: 2px 6px; border-radius: 3px; display: inline-block; margin-bottom: 5px; }
+    .p-price { font-size: 16px; font-weight: bold; color: #212121; margin-bottom: 8px; }
+
+    .buy-btn { background: #ff9f00; color: white; border: none; width: 100%; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; font-size: 13px; }
+
+    .bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 8px 0; border-top: 1px solid #e0e0e0; z-index: 20; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; color: #666; font-size: 11px; text-decoration: none; cursor: pointer; }
+    .nav-item.active { color: #2874f0; font-weight: bold; }
+    .nav-icon { font-size: 18px; margin-bottom: 2px; }
+
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 100; }
+    .modal-content { background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 400px; max-height: 90vh; overflow-y: auto; position: relative; }
+    .close-btn { position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; }
+
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 4px; }
+    .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="welcome-text">Welcome to A B H Online Store 🛍️</div>
+    <div class="search-bar">
+      🔍 <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="Search for products...">
+    </div>
+  </header>
+
+  <div class="categories">
+    <div class="cat-item" onclick="filterCategory('all')"><span class="cat-icon">🛍️</span>For You</div>
+    <div class="cat-item" onclick="filterCategory('beauty')"><span class="cat-icon">💄</span>Beauty</div>
+    <div class="cat-item" onclick="filterCategory('electronics')"><span class="cat-icon">⌚</span>Gadgets</div>
+  </div>
+     <div class="cat-item" onclick="filterCategory('t shirts') "><span class=" cat-icon">👕</span>t shirts</div>
+  <div class="banner">
+    <h2>🔥 BIG FREEDOM SALE 🔥</h2>
+    <p>Get Up to 80% OFF on all products!</p>
+  </div>
+
+  <div class="section-title">Trending Products</div>
+  <div class="products-grid" id="productList">
+    
+    <div class="product-card" data-cat="beauty">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://m.media-amazon.com/images/I/61S1i0+3H1L._SL1500_.jpg" alt="Cetaphil SA Cleanser 29ml">
+      <div class="p-name">Cetaphil Gentle Exfoliating SA Cleanser (29 ml)</div>
+      <div class="p-rating">4.2 ★</div>
+      <div class="p-price">₹99</div>
+      <button class="buy-btn" onclick="openCheckout('Cetaphil Gentle Exfoliating SA Cleanser (29 ml)', '99')">Buy Now</button>
+    </div>
+
+    <div class="product-card" data-cat="beauty">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://m.media-amazon.com/images/I/51rYI7a+NLL._SL1000_.jpg" alt="Cetaphil BHR Cleanser">
+      <div class="p-name">Cetaphil BHR Cleanser Face Wash</div>
+      <div class="p-rating">4.5 ★</div>
+      <div class="p-price">₹881</div>
+      <button class="buy-btn" onclick="openCheckout('Cetaphil BHR Cleanser Face Wash', '881')">Buy Now</button>
+    </div>
+
+    <div class="product-card" data-cat="beauty">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://m.media-amazon.com/images/I/51+Z1T7cIEL._SL1000_.jpg" alt="Clean & Clear">
+      <div class="p-name">Clean & Clear Foaming Face Wash</div>
+      <div class="p-rating">4.5 ★</div>
+      <div class="p-price">₹120</div>
+      <button class="buy-btn" onclick="openCheckout('Clean & Clear Foaming Face Wash', '120')">Buy Now</button>
+    </div>
+
+    <div class="product-card" data-cat="beauty">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://m.media-amazon.com/images/I/51e+mX6S2kL._SL1000_.jpg" alt="Ponds">
+      <div class="p-name">Ponds Bright Beauty Spotless Glow Facewash</div>
+      <div class="p-rating">4.6 ★</div>
+      <div class="p-price">₹198</div>
+      <button class="buy-btn" onclick="openCheckout('Ponds Bright Beauty Spotless Glow Facewash', '198')">Buy Now</button>
+    </div>
+
+    <div class="product-card" data-cat="electronics">
+      <button class="heart-btn" onclick="toggleWishlist(this)">♥</button>
+      <img src="https://m.media-amazon.com/images/I/61tapeOXotL._SL1500_.jpg" alt="Smart Watch">
+      <div class="p-name">Smart Bluetooth Calling Watch</div>
+      <div class="p-rating">4.7 ★</div>
+      <div class="p-price">₹599</div>
+      <button class="buy-btn" onclick="openCheckout('Smart Bluetooth Calling Watch', '599')">Buy Now</button>
+    </div>
+
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-item active"><span class="nav-icon">🏠</span>Home</div>
+    <div class="nav-item" onclick="alert('Categories Selected')"><span class="nav-icon">📊</span>Categories</div>
+    <div class="nav-item" onclick="openLoginModal()"><span class="nav-icon">👤</span>Account</div>
+    <div class="nav-item" onclick="alert('Cart is empty')"><span class="nav-icon">🛒</span>Cart</div>
+  </div>
+
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('loginModal')">X</button>
+      <h3>Account Login / Sign Up</h3><br>
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label>Full Name:</label>
+          <input type="text" id="userNameInput" required placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+          <label>Mobile Number:</label>
+          <input type="tel" id="userPhoneInput" pattern="[0-9]{10}" required placeholder="10 digit number">
+        </div>
+        <button type="submit" class="buy-btn" style="background:#2874f0;">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="checkoutModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal('checkoutModal')">X</button>
+      <h3 id="itemTitle">Product</h3>
+      <p style="color: green; font-weight: bold; margin: 5px 0 15px;">Total Price: <span id="itemPrice">₹0</span></p>
+
+      <h4>📦 Delivery Address</h4><br>
+      <form onsubmit="placeOrder(event)">
+        <div class="form-group"><label>House No. / Street / Area:</label><input type="text" id="addressInput" required></div>
+        <div class="form-group"><label>City Name:</label><input type="text" id="cityInput" required></div>
+        <div class="form-group"><label>Pincode:</label><input type="number" id="pincodeInput" required></div>
+        <div class="form-group"><label>Country:</label><select><option>India</option></select></div>
+
+        <h4>💳 Payment Options</h4>
+        <div style="margin: 10px 0;">
+          <label><input type="radio" name="pay" value="COD" checked> 💵 Cash on Delivery (COD)</label><br>
+          <label><input type="radio" name="pay" value="UPI"> 🟣 PhonePe / GPay / Paytm / UPI</label>
+        </div>
+
+        <button type="submit" class="buy-btn" style="background: #388e3c;">Confirm Order on WhatsApp</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let isLoggedIn = false;
+    let loggedUserName = "";
+    let loggedUserPhone = "";
+
+    const MY_WHATSAPP_NUMBER = "9088699141"; 
+
+    function toggleWishlist(btn) { btn.classList.toggle('active'); }
+    function openLoginModal() { document.getElementById('loginModal').style.display = "flex"; }
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      loggedUserName = document.getElementById('userNameInput').value;
+      loggedUserPhone = document.getElementById('userPhoneInput').value;
+      isLoggedIn = true;
+      alert("Welcome " + loggedUserName);
+      closeModal('loginModal');
+    }
+
+    function filterProducts() {
+      let input = document.getElementById('searchInput').value.toLowerCase();
+      let cards = document.getElementsByClassName('product-card');
+      for (let card of cards) {
+        let title = card.querySelector('.p-name').innerText.toLowerCase();
+        card.style.display = title.includes(input) ? "block" : "none";
+      }
+    }
+
+    function filterCategory(cat) {
+      let cards = document.getElementsByClassName('product-card');
+      for (let card of cards) {
+        if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+          card.style.display = "block";
+        } else {
+          card.style.display = "none";
+        }
+      }
+    }
+
+    function openCheckout(title, price) {
+      if (!isLoggedIn) {
+        alert("Please login first!");
+        openLoginModal();
+        return;
+      }
+      document.getElementById('itemTitle').innerText = title;
+      document.getElementById('itemPrice').innerText = "₹" + price;
+      document.getElementById('checkoutModal').style.display = "flex";
+    }
+
+    function placeOrder(e) {
+      e.preventDefault();
+      let product = document.getElementById('itemTitle').innerText;
+      let price = document.getElementById('itemPrice').innerText;
+      let address = document.getElementById('addressInput').value;
+      let city = document.getElementById('cityInput').value;
+      let pincode = document.getElementById('pincodeInput').value;
+      let pay = document.querySelector('input[name="pay"]:checked').value;
+
+      let message = `🛍️ *NEW ORDER - HUZAIF STORE*%0A%0A` +
+                    `*Product:* ${product}%0A` +
+                    `*Price:* ${price}%0A%0A` +
+                    `👤 *Customer Details:*%0A` +
+                    `Name: ${loggedUserName}%0A` +
+                    `Phone: ${loggedUserPhone}%0A%0A` +
+                    `📦 *Address:*%0A` +
+                    `${address}, ${city} - ${pincode}%0A%0A` +
+                    `💳 *Payment:* ${pay}`;
+
+      let whatsappUrl = `https://wa.me/${9088699141}?text=${message}`;
+      window.open(whatsappUrl, '_blank');
+      closeModal('checkoutModal');
+    }
+  </script>
+
+</body>
+</html>
