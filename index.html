@@ -665,3 +665,153 @@
     }
   });
 </script>
+<div class="modal" id="returnModal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal('returnModal')">X</button>
+    <h3 style="color:#d32f2f; margin-bottom:10px; font-size:16px;">🔄 Return Policy & Request</h3>
+    <p style="font-size: 11px; color: #555; margin-bottom: 12px;">7-Day Easy Return Guarantee! If you don't like the product, return it instantly.</p>
+    
+    <form onsubmit="submitReturnRequest(event)">
+      <div class="form-group"><label>Order ID or Product Name:</label><input type="text" id="returnOrderName" required placeholder="e.g. Formal Shirt"></div>
+      <div class="form-group">
+        <label>Reason for Return:</label>
+        <select id="returnReason">
+          <option value="Size/Fit Issue">Size / Fit Issue (छोटा या बड़ा है)</option>
+          <option value="Damaged Product">Damaged / Defective Product (खराब निकला)</option>
+          <option value="Not as shown">Different from Picture (फोटो जैसा नहीं है)</option>
+          <option value="Other">Other Reason</option>
+        </select>
+      </div>
+      <button type="submit" class="buy-btn" style="background: #d32f2f; width: 100%; margin-top: 5px;">Submit Return Request</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // अकाउंट पेज के मेनू में 'Return Parcel' का ऑप्शन जोड़ना
+  window.addEventListener('DOMContentLoaded', (event) => {
+    let settingsList = document.querySelector('.settings-list');
+    if (settingsList) {
+      let returnItem = document.createElement('div');
+      returnItem.className = 'settings-item';
+      returnItem.innerHTML = '<span>🔄 Return Parcel / Return Policy</span> <span>></span>';
+      returnItem.onclick = function() {
+        document.getElementById('returnModal').style.display = "flex";
+      };
+      settingsList.appendChild(returnItem);
+    }
+  });
+
+  function submitReturnRequest(e) {
+    e.preventDefault();
+    let item = document.getElementById('returnOrderName').value;
+    let reason = document.getElementById('returnReason').value;
+    
+    alert("Return Request Submitted Successfully for '" + item + "'! Reason: " + reason + ". Our delivery partner will pick it up within 24 hours.");
+    closeModal('returnModal');
+  }
+</script>
+ <div class="modal" id="deliveryScannerModal">
+  <div class="modal-content" style="text-align: center;">
+    <button class="close-btn" onclick="closeModal('deliveryScannerModal')">X</button>
+    <h3 style="color:#2874f0; margin-bottom:10px; font-size:16px;">📷 Delivery Confirmation Scanner</h3>
+    <p style="font-size: 11px; color: #666; margin-bottom: 12px;">Scan customer QR code or enter Order ID to mark parcel as delivered:</p>
+    
+    <div class="form-group">
+      <input type="text" id="scannerInputId" placeholder="Enter Order ID (e.g. ABH123)" style="text-align: center; font-weight: bold;">
+    </div>
+    <button class="buy-btn" style="background: #388e3c; width: 100%; margin-top: 5px;" onclick="confirmDeliveryByScanner()">Verify & Mark Delivered</button>
+  </div>
+</div>
+
+<script>
+  // थ्री डॉट्स या अकाउंट मेनू में 'Delivery Scanner' का ऑप्शन जोड़ना
+  window.addEventListener('DOMContentLoaded', (event) => {
+    let settingsList = document.querySelector('.settings-list');
+    if (settingsList) {
+      let scannerItem = document.createElement('div');
+      scannerItem.className = 'settings-item';
+      scannerItem.innerHTML = '<span>📷 Delivery Boy Scanner (Mark Delivered)</span> <span>></span>';
+      scannerItem.onclick = function() {
+        document.getElementById('deliveryScannerModal').style.display = "flex";
+      };
+      settingsList.appendChild(scannerItem);
+    }
+  });
+
+  function confirmDeliveryByScanner() {
+    let orderId = document.getElementById('scannerInputId').value;
+    if(!orderId) {
+      alert("Please enter Order ID!");
+      return;
+    }
+    
+    // ट्रैकिंग बॉक्स में सक्सेस स्टेटस दिखाना
+    let trackingCard = document.querySelector('#trackingModal .modal-content div[style*="background: white"]');
+    if (trackingCard) {
+      // पहले से अगर डिलीवर मैसेज है तो दोबारा न जोड़े
+      if(!document.getElementById('finalDeliveredBadge')) {
+        let successStep = document.createElement('div');
+        successStep.id = 'finalDeliveredBadge';
+        successStep.style.cssText = "display: flex; align-items: flex-start; gap: 12px; position: relative; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #ccc;";
+        successStep.innerHTML = `
+          <div style="width: 24px; height: 24px; border-radius: 50%; background: #388e3c; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">✔</div>
+          <div>
+            <h4 style="font-size: 13px; color: #388e3c;">Parcel Successfully Delivered! 🎉</h4>
+            <p style="font-size: 11px; color: #555;">Verified via Delivery Scanner. Thank you for shopping with ABH Store!</p>
+          </div>
+        `;
+        trackingCard.appendChild(successStep);
+      }
+    }
+    
+    alert("Success! Order " + orderId + " marked as Delivered. Customer tracking updated!");
+    closeModal('deliveryScannerModal');
+  }
+</script>
+<div class="modal" id="returnModal">
+  <div class="modal-content">
+    <button class="close-btn" onclick="closeModal('returnModal')">X</button>
+    <h3 style="color:#d32f2f; margin-bottom:10px; font-size:16px;">🔄 Return Policy & Request</h3>
+    <p style="font-size: 11px; color: #555; margin-bottom: 12px;">7-Day Easy Return Guarantee! If you don't like the product, return it instantly.</p>
+    
+    <form onsubmit="submitReturnRequest(event)">
+      <div class="form-group"><label>Order ID or Product Name:</label><input type="text" id="returnOrderName" required placeholder="e.g. Formal Shirt"></div>
+      <div class="form-group">
+        <label>Reason for Return:</label>
+        <select id="returnReason">
+          <option value="Size/Fit Issue">Size / Fit Issue (छोटा या बड़ा है)</option>
+          <option value="Damaged Product">Damaged / Defective Product (खराब निकला)</option>
+          <option value="Not as shown">Different from Picture (फोटो जैसा नहीं है)</option>
+          <option value="Other">Other Reason</option>
+        </select>
+      </div>
+      <button type="submit" class="buy-btn" style="background: #d32f2f; width: 100%; margin-top: 5px;">Submit Return Request</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // अकाउंट पेज के मेनू में 'Return Parcel' का ऑप्शन जोड़ना
+  window.addEventListener('DOMContentLoaded', (event) => {
+    let settingsList = document.querySelector('.settings-list');
+    if (settingsList) {
+      let returnItem = document.createElement('div');
+      returnItem.className = 'settings-item';
+      returnItem.innerHTML = '<span>🔄 Return Parcel / Return Policy</span> <span>></span>';
+      returnItem.onclick = function() {
+        document.getElementById('returnModal').style.display = "flex";
+      };
+      settingsList.appendChild(returnItem);
+    }
+  });
+
+  function submitReturnRequest(e) {
+    e.preventDefault();
+    let item = document.getElementById('returnOrderName').value;
+    let reason = document.getElementById('returnReason').value;
+    
+    alert("Return Request Submitted Successfully for '" + item + "'! Reason: " + reason + ". Our delivery partner will pick it up within 24 hours.");
+    closeModal('returnModal');
+  }
+</script>
